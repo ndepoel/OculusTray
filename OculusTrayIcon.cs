@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.ServiceProcess;
@@ -19,9 +20,9 @@ namespace OculusTray
 
         private bool _disposed;
 
-        private MenuItem _menuStart;
-        private MenuItem _menuStop;
-        private MenuItem _menuRestart;
+        private ToolStripMenuItem _menuStart;
+        private ToolStripMenuItem _menuStop;
+        private ToolStripMenuItem _menuRestart;
 
         public OculusTrayIcon(OculusService oculusService, FileInfo oculusClientPath)
         {
@@ -30,7 +31,7 @@ namespace OculusTray
 
             _notifyIcon = new NotifyIcon
             {
-                ContextMenu = CreateContextMenu(),
+                ContextMenuStrip = CreateContextMenu(),
                 Text = Resources.Oculus_VR_Service,
                 Visible = true,
             };
@@ -41,18 +42,26 @@ namespace OculusTray
             PollServiceStatus();
         }
         
-        private ContextMenu CreateContextMenu()
+        private ContextMenuStrip CreateContextMenu()
         {
-            return new ContextMenu(new[]
+            var elevateImage = OculusUtil.IsElevated ? (Image)null : SystemIcons.Shield.ToBitmap();
+
+            var menu = new ContextMenuStrip();
+            menu.Items.AddRange(new ToolStripItem[]
             {
-                new MenuItem(Resources.Menu_OpenClient, OnOpenOculusClient) { DefaultItem = true },
-                new MenuItem("-"),
-                _menuStart = new MenuItem(Resources.Menu_Start, OnStart),
-                _menuStop = new MenuItem(Resources.Menu_Stop, OnStop),
-                _menuRestart = new MenuItem(Resources.Menu_Restart, OnRestart),
-                new MenuItem("-"),
-                new MenuItem(Resources.Menu_Exit, OnExit),
+                new ToolStripMenuItem(Resources.Menu_OpenClient, null, OnOpenOculusClient),
+                new ToolStripSeparator(),
+                _menuStart = new ToolStripMenuItem(Resources.Menu_Start, elevateImage, OnStart),
+                _menuStop = new ToolStripMenuItem(Resources.Menu_Stop, elevateImage, OnStop),
+                _menuRestart = new ToolStripMenuItem(Resources.Menu_Restart, elevateImage, OnRestart),
+                new ToolStripSeparator(),
+                new ToolStripMenuItem(Resources.Menu_Exit, null, OnExit),
             });
+
+            _menuStart.Font = new Font(_menuStart.Font, FontStyle.Bold);
+            _menuStop.Font = new Font(_menuStop.Font, FontStyle.Bold);
+
+            return menu;
         }
 
         private void OnOpenOculusClient(object sender, EventArgs args)
