@@ -42,10 +42,7 @@ namespace OculusTray
         {
             if (args.Length < 2)
                 return;
-
-            if (!OculusUtil.IsElevated)
-                return;
-
+            
             var service = OculusUtil.FindOculusService();
             if (service == null)
             {
@@ -57,13 +54,13 @@ namespace OculusTray
 
             switch (args[1].ToLowerInvariant())
             {
-                case "start":
+                case OculusService.StartCommand:
                     oculusService.Start();
                     break;
-                case "stop":
+                case OculusService.StopCommand:
                     oculusService.Stop();
                     break;
-                case "restart":
+                case OculusService.RestartCommand:
                     oculusService.Restart();
                     break;
             }
