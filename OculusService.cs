@@ -11,6 +11,8 @@ namespace OculusTray
     {
         private readonly ServiceController _service;
 
+        private ServiceControllerStatus? _temporaryStatus;
+
         public OculusService(ServiceController service)
         {
             _service = service;
@@ -20,6 +22,9 @@ namespace OculusTray
         {
             get
             {
+                if (_temporaryStatus.HasValue)
+                    return _temporaryStatus.Value;
+
                 _service.Refresh();
                 return _service.Status;
             }
@@ -27,20 +32,47 @@ namespace OculusTray
 
         public void Start()
         {
-            _service.Start();
-            _service.WaitForStatus(ServiceControllerStatus.Running);
+            if (OculusUtil.IsElevated)
+            {
+                _service.Start();
+                _service.WaitForStatus(ServiceControllerStatus.Running);
+            }
+            else
+            {
+                _temporaryStatus = ServiceControllerStatus.StartPending;
+                OculusUtil.ElevateMe("start", true);
+                _temporaryStatus = null;
+            }
         }
 
         public void Stop()
         {
-            _service.Stop();
-            _service.WaitForStatus(ServiceControllerStatus.Stopped);
+            if (OculusUtil.IsElevated)
+            {
+                _service.Stop();
+                _service.WaitForStatus(ServiceControllerStatus.Stopped);
+            }
+            else
+            {
+                _temporaryStatus = ServiceControllerStatus.StopPending;
+                OculusUtil.ElevateMe("stop", true);
+                _temporaryStatus = null;
+            }
         }
 
         public void Restart()
         {
-            Stop();
-            Start();
+            if (OculusUtil.IsElevated)
+            {
+                Stop();
+                Start();
+            }
+            else
+            {
+                _temporaryStatus = ServiceControllerStatus.StartPending;
+                OculusUtil.ElevateMe("restart", true);
+                _temporaryStatus = null;
+            }
         }
     }
 }

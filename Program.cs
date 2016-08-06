@@ -21,10 +21,10 @@ namespace OculusTray
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            // Double check that we're running with elevated privileges, otherwise we can't control any services
-            if (!OculusUtil.IsElevated)
+            string[] cmdArgs = Environment.GetCommandLineArgs();
+            if (cmdArgs.Length > 1)
             {
-                OculusUtil.ElevateMe();
+                RunCommand(cmdArgs);
                 return;
             }
 
@@ -38,11 +38,39 @@ namespace OculusTray
             StartTrayIcon();
         }
 
-        private static void StartTrayIcon()
+        private static void RunCommand(string[] args)
         {
+            if (args.Length < 2)
+                return;
+
             if (!OculusUtil.IsElevated)
                 return;
 
+            var service = OculusUtil.FindOculusService();
+            if (service == null)
+            {
+                Error(Resources.Error_VR_Service_Not_Found);
+                return;
+            }
+
+            var oculusService = new OculusService(service);
+
+            switch (args[1].ToLowerInvariant())
+            {
+                case "start":
+                    oculusService.Start();
+                    break;
+                case "stop":
+                    oculusService.Stop();
+                    break;
+                case "restart":
+                    oculusService.Restart();
+                    break;
+            }
+        }
+
+        private static void StartTrayIcon()
+        {
             var service = OculusUtil.FindOculusService();
             if (service == null)
             {

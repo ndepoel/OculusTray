@@ -44,13 +44,17 @@ namespace OculusTray
             return File.Exists(clientPath) ? new FileInfo(clientPath) : null;
         }
 
-        public static void ElevateMe(string arguments = "")
+        public static void ElevateMe(string arguments = "", bool waitForExit = false)
         {
             string executable = Process.GetCurrentProcess().MainModule.FileName;
             var startInfo = new ProcessStartInfo(executable) { Verb = @"runas", Arguments = arguments };
             try
             {
-                Process.Start(startInfo);
+                var process = Process.Start(startInfo);
+                if (process != null && waitForExit)
+                {
+                    process.WaitForExit();
+                }
             }
             catch (Win32Exception)
             {
