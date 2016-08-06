@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Management;
-using System.Security.Principal;
-using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,8 +12,6 @@ namespace OculusTray
 {
     static class Program
     {
-        private static bool IsElevated => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
-
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -27,11 +22,9 @@ namespace OculusTray
             Application.SetCompatibleTextRenderingDefault(false);
 
             // Double check that we're running with elevated privileges, otherwise we can't control any services
-            if (!IsElevated)
+            if (!OculusUtil.IsElevated)
             {
-                string executable = Process.GetCurrentProcess().MainModule.FileName;
-                var startInfo = new ProcessStartInfo(executable) { Verb = @"runas" };
-                Process.Start(startInfo);
+                OculusUtil.ElevateMe();
                 return;
             }
 
@@ -47,24 +40,24 @@ namespace OculusTray
 
         private static void StartTrayIcon()
         {
-            if (!IsElevated)
+            if (!OculusUtil.IsElevated)
                 return;
 
-            var oculusService = OculusUtil.FindOculusService();
-            if (oculusService == null)
+            var service = OculusUtil.FindOculusService();
+            if (service == null)
             {
                 Error(Resources.Error_VR_Service_Not_Found);
                 return;
             }
 
-            var oculusClientPath = OculusUtil.GetOculusClientPath();
-            if (oculusClientPath == null)
+            var clientPath = OculusUtil.GetOculusClientPath();
+            if (clientPath == null)
             {
                 Error(Resources.Error_Oculus_Client_Not_Found);
                 return;
             }
             
-            using (new OculusTrayIcon(oculusService, oculusClientPath))
+            using (new OculusTrayIcon(new OculusService(service), clientPath))
             {
                 Application.Run();
             }

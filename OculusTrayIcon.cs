@@ -13,7 +13,7 @@ namespace OculusTray
 {
     public class OculusTrayIcon: IDisposable
     {
-        private readonly ServiceController _oculusService;
+        private readonly OculusService _oculusService;
         private readonly FileInfo _oculusClientPath;
         private readonly NotifyIcon _notifyIcon;
 
@@ -23,7 +23,7 @@ namespace OculusTray
         private MenuItem _menuStop;
         private MenuItem _menuRestart;
 
-        public OculusTrayIcon(ServiceController oculusService, FileInfo oculusClientPath)
+        public OculusTrayIcon(OculusService oculusService, FileInfo oculusClientPath)
         {
             _oculusService = oculusService;
             _oculusClientPath = oculusClientPath;
@@ -64,7 +64,6 @@ namespace OculusTray
         {
             SetStarting();
             _oculusService.Start();
-            _oculusService.WaitForStatus(ServiceControllerStatus.Running);
             UpdateStatus();
         }
 
@@ -72,20 +71,13 @@ namespace OculusTray
         {
             SetStopping();
             _oculusService.Stop();
-            _oculusService.WaitForStatus(ServiceControllerStatus.Stopped);
             UpdateStatus();
         }
 
         private void OnRestart(object sender, EventArgs args)
         {
             SetStopping();
-            _oculusService.Stop();
-            _oculusService.WaitForStatus(ServiceControllerStatus.Stopped);
-            UpdateStatus();
-
-            SetStarting();
-            _oculusService.Start();
-            _oculusService.WaitForStatus(ServiceControllerStatus.Running);
+            _oculusService.Restart();
             UpdateStatus();
         }
         
@@ -96,8 +88,6 @@ namespace OculusTray
 
         private void ToggleService(object sender, EventArgs args)
         {
-            _oculusService.Refresh();
-
             switch (_oculusService.Status)
             {
                 case ServiceControllerStatus.Running:
@@ -111,8 +101,6 @@ namespace OculusTray
 
         private void UpdateStatus()
         {
-            _oculusService.Refresh();
-
             switch (_oculusService.Status)
             {
                 case ServiceControllerStatus.Running:
