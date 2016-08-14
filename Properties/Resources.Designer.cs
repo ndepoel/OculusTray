@@ -97,7 +97,7 @@ namespace OculusTray.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Restart service.
+        ///   Looks up a localized string similar to Restart Oculus service.
         /// </summary>
         internal static string Menu_Restart {
             get {
@@ -106,7 +106,7 @@ namespace OculusTray.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start service.
+        ///   Looks up a localized string similar to Start Oculus service.
         /// </summary>
         internal static string Menu_Start {
             get {
@@ -115,7 +115,7 @@ namespace OculusTray.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stop service.
+        ///   Looks up a localized string similar to Stop Oculus service.
         /// </summary>
         internal static string Menu_Stop {
             get {
@@ -153,7 +153,7 @@ namespace OculusTray.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Running.
+        ///   Looks up a localized string similar to is running.
         /// </summary>
         internal static string Status_Running {
             get {
@@ -162,7 +162,7 @@ namespace OculusTray.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Starting.
+        ///   Looks up a localized string similar to is starting.
         /// </summary>
         internal static string Status_Starting {
             get {
@@ -171,7 +171,7 @@ namespace OculusTray.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stopped.
+        ///   Looks up a localized string similar to is stopped.
         /// </summary>
         internal static string Status_Stopped {
             get {
@@ -180,7 +180,7 @@ namespace OculusTray.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stopping.
+        ///   Looks up a localized string similar to is stopping.
         /// </summary>
         internal static string Status_Stopping {
             get {

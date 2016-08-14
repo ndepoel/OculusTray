@@ -140,25 +140,25 @@
     <value>Exit</value>
   </data>
   <data name="Menu_Restart" xml:space="preserve">
-    <value>Restart service</value>
+    <value>Restart Oculus service</value>
   </data>
   <data name="Menu_Start" xml:space="preserve">
-    <value>Start service</value>
+    <value>Start Oculus service</value>
   </data>
   <data name="Menu_Stop" xml:space="preserve">
-    <value>Stop service</value>
+    <value>Stop Oculus service</value>
   </data>
   <data name="Status_Running" xml:space="preserve">
-    <value>Running</value>
+    <value>is running</value>
   </data>
   <data name="Status_Starting" xml:space="preserve">
-    <value>Starting</value>
+    <value>is starting</value>
   </data>
   <data name="Status_Stopped" xml:space="preserve">
-    <value>Stopped</value>
+    <value>is stopped</value>
   </data>
   <data name="Status_Stopping" xml:space="preserve">
-    <value>Stopping</value>
+    <value>is stopping</value>
   </data>
   <data name="Error_Oculus_Client_Not_Found" xml:space="preserve">
     <value>Could not find the Oculus Client! Please make sure you have the Oculus Software installed.</value>

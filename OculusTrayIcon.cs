@@ -136,7 +136,7 @@ namespace OculusTray
         private void SetRunning()
         {
             _notifyIcon.Icon = Resources.Running;
-            _notifyIcon.Text = $"{Resources.Oculus_VR_Service} - {Resources.Status_Running}";
+            _notifyIcon.Text = $"{Resources.Oculus_VR_Service} {Resources.Status_Running}";
 
             _menuStart.Visible = false;
             _menuStop.Visible = _menuRestart.Visible = true;
@@ -145,7 +145,7 @@ namespace OculusTray
         private void SetStopped()
         {
             _notifyIcon.Icon = Resources.Stopped;
-            _notifyIcon.Text = $"{Resources.Oculus_VR_Service} - {Resources.Status_Stopped}";
+            _notifyIcon.Text = $"{Resources.Oculus_VR_Service} {Resources.Status_Stopped}";
 
             _menuStart.Visible = true;
             _menuStop.Visible = _menuRestart.Visible = false;
@@ -154,7 +154,7 @@ namespace OculusTray
         private void SetStarting()
         {
             _notifyIcon.Icon = Resources.Pending;
-            _notifyIcon.Text = $"{Resources.Oculus_VR_Service} - {Resources.Status_Starting}";
+            _notifyIcon.Text = $"{Resources.Oculus_VR_Service} {Resources.Status_Starting}";
 
             _menuStart.Visible = _menuStop.Visible = _menuRestart.Visible = false;
         }
@@ -162,7 +162,7 @@ namespace OculusTray
         private void SetStopping()
         {
             _notifyIcon.Icon = Resources.Pending;
-            _notifyIcon.Text = $"{Resources.Oculus_VR_Service} - {Resources.Status_Stopping}";
+            _notifyIcon.Text = $"{Resources.Oculus_VR_Service} {Resources.Status_Stopping}";
 
             _menuStart.Visible = _menuStop.Visible = _menuRestart.Visible = false;
         }
